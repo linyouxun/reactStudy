@@ -7,7 +7,8 @@ module.exports = {
   output: {
     path: 'statics/js',
     filename: 'bundle.js',
-    publicPath: '/'
+    publicPath: '/',
+    chunkFilename: '[name].[chunkhash:5].chunk.js',
   },
   resolve:{
     extensions:["",".js",".jsx","css","less","scss","png","jpg"],

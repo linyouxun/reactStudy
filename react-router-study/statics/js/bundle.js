@@ -24940,12 +24940,32 @@
 	  { history: _reactRouter.browserHistory },
 	  _react2.default.createElement(
 	    _reactRouter.Route,
-	    { path: '/', component: _App2.default },
-	    _react2.default.createElement(_reactRouter.IndexRoute, { component: _Abort2.default }),
-	    _react2.default.createElement(_reactRouter.Route, { path: '/abort', component: _Abort2.default }),
-	    _react2.default.createElement(_reactRouter.Route, { path: '/repo/:id', component: _Repo2.default })
+	    { path: '/', getComponent: function getComponent(nextState, cb) {
+	        !/* require.ensure */(function (require) {
+	          cb(null, __webpack_require__(218).default);
+	        }(__webpack_require__));
+	      } },
+	    _react2.default.createElement(_reactRouter.IndexRoute, { getComponent: function getComponent(nextState, cb) {
+	        !/* require.ensure */(function (require) {
+	          cb(null, __webpack_require__(224).default);
+	        }(__webpack_require__));
+	      } }),
+	    _react2.default.createElement(_reactRouter.Route, { path: '/abort', getComponent: function getComponent(nextState, cb) {
+	        !/* require.ensure */(function (require) {
+	          cb(null, __webpack_require__(224).default);
+	        }(__webpack_require__));
+	      } }),
+	    _react2.default.createElement(_reactRouter.Route, { path: '/repo/:id', getComponent: function getComponent(nextState, cb) {
+	        !/* require.ensure */(function (require) {
+	          cb(null, __webpack_require__(226).default);
+	        }(__webpack_require__));
+	      } })
 	  ),
-	  _react2.default.createElement(_reactRouter.Route, { path: '*', component: _NotFound2.default })
+	  _react2.default.createElement(_reactRouter.Route, { path: '*', getComponent: function getComponent(nextState, cb) {
+	      !/* require.ensure */(function (require) {
+	        cb(null, __webpack_require__(225).default);
+	      }(__webpack_require__));
+	    } })
 	);
 
 /***/ },

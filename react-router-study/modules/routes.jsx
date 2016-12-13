@@ -14,11 +14,36 @@ import Repo from './Repo';
 
 module.exports = (
   <Router history={browserHistory}>
-    <Route path="/" component={App}>
-      <IndexRoute component={Abort}/>
-      <Route path="/abort" component={Abort}/>
-      <Route path="/repo/:id" component={Repo}/>
+    <Route path="/" getComponent={(nextState, cb)=>
+    {
+      require.ensure([], (require) => {
+        cb(null,require("./App").default )
+      }, 'app')
+    }}>
+      <IndexRoute getComponent={(nextState, cb)=>
+      {
+        require.ensure([], (require) => {
+          cb(null, require("./Abort").default )
+        }, 'abort')
+      }}/>
+      <Route path="/abort" getComponent={(nextState, cb)=>
+      {
+        require.ensure([], (require) => {
+          cb(null, require("./Abort").default )
+        }, 'abort')
+      }}/>
+      <Route path="/repo/:id" getComponent={(nextState, cb)=>
+      {
+        require.ensure([], (require) => {
+          cb(null,require("./Repo").default )
+        }, 'repo')
+      }}/>
     </Route>
-    <Route path="*" component={NotFound}/>
+    <Route path="*" getComponent={(nextState, cb)=>
+    {
+      require.ensure([], (require) => {
+        cb(null,require("./NotFound").default )
+      }, 'notFound')
+    }}/>
   </Router>
 )
