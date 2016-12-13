@@ -25630,13 +25630,21 @@
 	var Repo = function (_Component) {
 	  _inherits(Repo, _Component);
 
-	  function Repo() {
+	  function Repo(props) {
 	    _classCallCheck(this, Repo);
 
-	    return _possibleConstructorReturn(this, (Repo.__proto__ || Object.getPrototypeOf(Repo)).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, (Repo.__proto__ || Object.getPrototypeOf(Repo)).call(this, props));
+
+	    _this.goBack = _this._goBack.bind(_this);
+	    return _this;
 	  }
 
 	  _createClass(Repo, [{
+	    key: "_goBack",
+	    value: function _goBack() {
+	      this.context.router.push("/");
+	    }
+	  }, {
 	    key: "render",
 	    value: function render() {
 	      var id = this.props.params.id;
@@ -25645,7 +25653,12 @@
 	        "div",
 	        null,
 	        "repo:",
-	        id
+	        id,
+	        _react2.default.createElement(
+	          "button",
+	          { onClick: this.goBack },
+	          "go back"
+	        )
 	      );
 	    }
 	  }]);
@@ -25654,6 +25667,11 @@
 	}(_react.Component);
 
 	exports.default = Repo;
+
+
+	Repo.contextTypes = {
+	  router: _react2.default.PropTypes.object
+	};
 
 /***/ }
 /******/ ]);

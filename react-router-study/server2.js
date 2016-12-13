@@ -12,11 +12,11 @@ var path = require('path');
 var app = express()
 
 // serve our static stuff like index.css
-app.use(express.static(path.join(__dirname, "./statics/css")));
-app.use(express.static(path.join(__dirname, "./statics/js")));
+app.use(express.static(path.join(__dirname, "./statics")));
+app.use(express.static(path.join(__dirname, "./statics")));
 
 // send all requests to index.html so browserHistory in React Router works
-app.get('*', (req, res) => {
+app.get('/', (req, res) => {
   // match the routes to the url
   match({ routes: routes, location: req.url }, (err, redirect, props) => {
     // `RouterContext` is what the `Router` renders. `Router` keeps these
@@ -39,7 +39,7 @@ function renderPage(appHtml) {
     <meta charset=utf-8/>
     <title>My First React Router App</title>
     <div id=app>${appHtml}</div>
-    <script src="/bundle.js"></script>
+    <script src="/js/bundle.js"></script>
    `
 }
 

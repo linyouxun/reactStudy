@@ -70,11 +70,11 @@
 	var app = express();
 
 	// serve our static stuff like index.css
-	app.use(express.static(path.join(__dirname, "./statics/css")));
-	app.use(express.static(path.join(__dirname, "./statics/js")));
+	app.use(express.static(path.join(__dirname, "./statics")));
+	app.use(express.static(path.join(__dirname, "./statics")));
 
 	// send all requests to index.html so browserHistory in React Router works
-	app.get('*', function (req, res) {
+	app.get('/', function (req, res) {
 	  // match the routes to the url
 	  (0, _reactRouter.match)({ routes: _routes2.default, location: req.url }, function (err, redirect, props) {
 	    // `RouterContext` is what the `Router` renders. `Router` keeps these
@@ -91,7 +91,7 @@
 	});
 
 	function renderPage(appHtml) {
-	  return '\n    <!doctype html public="storage">\n    <html>\n    <meta charset=utf-8/>\n    <title>My First React Router App</title>\n    <div id=app>' + appHtml + '</div>\n    <script src="/bundle.js"></script>\n   ';
+	  return '\n    <!doctype html public="storage">\n    <html>\n    <meta charset=utf-8/>\n    <title>My First React Router App</title>\n    <div id=app>' + appHtml + '</div>\n    <script src="/js/bundle.js"></script>\n   ';
 	}
 
 	var PORT = process.env.PORT || 8080;
@@ -856,13 +856,21 @@
 	var Repo = function (_Component) {
 	  _inherits(Repo, _Component);
 
-	  function Repo() {
+	  function Repo(props) {
 	    _classCallCheck(this, Repo);
 
-	    return _possibleConstructorReturn(this, (Repo.__proto__ || Object.getPrototypeOf(Repo)).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, (Repo.__proto__ || Object.getPrototypeOf(Repo)).call(this, props));
+
+	    _this.goBack = _this._goBack.bind(_this);
+	    return _this;
 	  }
 
 	  _createClass(Repo, [{
+	    key: "_goBack",
+	    value: function _goBack() {
+	      this.context.router.push("/");
+	    }
+	  }, {
 	    key: "render",
 	    value: function render() {
 	      var id = this.props.params.id;
@@ -871,7 +879,12 @@
 	        "div",
 	        null,
 	        "repo:",
-	        id
+	        id,
+	        _react2.default.createElement(
+	          "button",
+	          { onClick: this.goBack },
+	          "go back"
+	        )
 	      );
 	    }
 	  }]);
@@ -880,6 +893,11 @@
 	}(_react.Component);
 
 	exports.default = Repo;
+
+
+	Repo.contextTypes = {
+	  router: _react2.default.PropTypes.object
+	};
 
 /***/ },
 /* 15 */
