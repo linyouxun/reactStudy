@@ -6,7 +6,10 @@ module.exports = {
   entry: path.resolve(__dirname, 'server2.js'),
 
   output: {
-    filename: 'server.bundle.js'
+    path: __dirname,
+    filename: 'server.bundle.js',
+    publicPath: '/',
+    chunkFilename: '/statics/js/[name].server.[chunkhash:5].chunk.js',
   },
 
   target: 'node',
