@@ -1,6 +1,6 @@
 var fs = require('fs')
 var path = require('path')
-
+// var webpack = require('webpack')
 module.exports = {
 
   entry: path.resolve(__dirname, 'server2.js'),
@@ -10,6 +10,7 @@ module.exports = {
     // path: "statics/chunkJs",
     filename: 'server.bundle.js',
     publicPath: '/',
+    chunkFilename: '/statics/chunkJs/[name].chunk.js',
     // chunkFilename: '/statics/chunkJs/[name].server.[chunkhash:5].chunk.js',
   },
 
@@ -41,6 +42,11 @@ module.exports = {
       { test: /\.css$/, loader: 'style-loader!css-loader' },
       { test: /\.scss$/, loader: 'style!css!sass?sourceMap'},
     ]
-  }
+  },
+
+  plugins: [
+    // new webpack.optimize.CommonsChunkPlugin(/* chunkName= */"vendor", /* filename= */"vendor.bundle.js")
+    // new webpack.optimize.CommonsChunkPlugin()
+  ]
 
 }

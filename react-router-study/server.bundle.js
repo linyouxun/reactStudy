@@ -2,6 +2,12 @@
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 
+/******/ 	// object to store loaded chunks
+/******/ 	// "1" means "already loaded"
+/******/ 	var installedChunks = {
+/******/ 		0:1
+/******/ 	};
+
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 
@@ -26,6 +32,21 @@
 /******/ 		return module.exports;
 /******/ 	}
 
+/******/ 	// This file contains only the entry chunk.
+/******/ 	// The chunk loading function for additional chunks
+/******/ 	__webpack_require__.e = function requireEnsure(chunkId, callback) {
+/******/ 		// "1" is the signal for "already loaded"
+/******/ 		if(!installedChunks[chunkId]) {
+/******/ 			var chunk = require(".//statics/chunkJs/" + ({"1":"app"}[chunkId]||chunkId) + ".chunk.js");
+/******/ 			var moreModules = chunk.modules, chunkIds = chunk.ids;
+/******/ 			for(var moduleId in moreModules) {
+/******/ 				modules[moduleId] = moreModules[moduleId];
+/******/ 			}
+/******/ 			for(var i = 0; i < chunkIds.length; i++)
+/******/ 				installedChunks[chunkIds[i]] = 1;
+/******/ 		}
+/******/ 		callback.call(null, __webpack_require__);
+/******/ 	};
 
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
@@ -62,10 +83,10 @@
 
 	// and these to match the url to routes and then render
 	// import some new stuff
-	var express = __webpack_require__(16);
+	var express = __webpack_require__(17);
 	// we'll use this to render our app to an html string
 
-	var path = __webpack_require__(17);
+	var path = __webpack_require__(18);
 
 	var app = express();
 
@@ -74,7 +95,7 @@
 	app.use(express.static(path.join(__dirname, "./statics")));
 
 	// send all requests to index.html so browserHistory in React Router works
-	app.get('/', function (req, res) {
+	app.get('*', function (req, res) {
 	  // match the routes to the url
 	  (0, _reactRouter.match)({ routes: _routes2.default, location: req.url }, function (err, redirect, props) {
 	    // `RouterContext` is what the `Router` renders. `Router` keeps these
@@ -88,6 +109,17 @@
 	    // function, `renderPage`
 	    res.send(renderPage(appHtml));
 	  });
+	  //  match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
+	  //   if (error) {
+	  //     res.status(500).send(error.message)
+	  //   } else if (redirectLocation) {
+	  //     res.redirect(302, redirectLocation.pathname + redirectLocation.search)
+	  //   } else if (renderProps) {
+	  //     res.status(200).send(renderPage(renderToString(<RouterContext {...renderProps} />)))
+	  //   } else {
+	  //     res.status(404).send('Not found')
+	  //   }
+	  // })
 	});
 
 	function renderPage(appHtml) {
@@ -136,20 +168,23 @@
 
 	var _App2 = _interopRequireDefault(_App);
 
-	var _Abort = __webpack_require__(13);
+	var _Abort = __webpack_require__(14);
 
 	var _Abort2 = _interopRequireDefault(_Abort);
 
-	var _NotFound = __webpack_require__(14);
+	var _NotFound = __webpack_require__(15);
 
 	var _NotFound2 = _interopRequireDefault(_NotFound);
 
-	var _Repo = __webpack_require__(15);
-
-	var _Repo2 = _interopRequireDefault(_Repo);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	// import Repo from './Repo';
+
+
+	function autoCertification(nextState, replaceState) {
+	  console.log('----');
+	  console.log(nextState.location.pathname);
+	}
 	// browserHistory  hashHistory
 	// import {Router, Route, IndexRedirect, useRouterHistory, Redirect,IndexRoute} from 'react-router';
 	// import {createHistory} from 'history';
@@ -163,54 +198,27 @@
 	    { path: '/', component: _App2.default },
 	    _react2.default.createElement(_reactRouter.IndexRoute, { component: _Abort2.default }),
 	    _react2.default.createElement(_reactRouter.Route, { path: '/abort', component: _Abort2.default }),
-	    _react2.default.createElement(_reactRouter.Route, { path: '/repo', component: _Repo2.default })
+	    _react2.default.createElement(_reactRouter.Route, { path: '/repo/:id', getComponent:
+	      // (location, cb) => {
+	      //   cb(null, require('./Repo'))
+	      // }
+	      function getComponent(nextState, cb) {
+	        __webpack_require__.e/* nsure */(1, function (require) {
+	          cb(null, __webpack_require__(16));
+	        });
+	      } })
 	  ),
 	  _react2.default.createElement(_reactRouter.Route, { path: '*', component: _NotFound2.default })
 	);
 
 	// module.exports = (
 	//   <Router history={browserHistory}>
-	//   <Route path="/" getComponent={
-	//           (nextState, cb)=>{
-	//             require.ensure([], (require) => {
-	//               console.log('---');
-	//               cb(null, require('./App'))
-	//             }, 'app')
-	//           }
-	//         } >
-	//     <IndexRoute getComponent={
-	//             (nextState, cb)=>{
-	//               require.ensure([], (require) => {
-	//                 console.log('---');
-	//                 cb(null, require('./Abort'))
-	//               }, 'abort')
-	//             }
-	//           } />
-	//     <Route path="/abort" getComponent={
-	//             (nextState, cb)=>{
-	//               require.ensure([], (require) => {
-	//                 console.log('---');
-	//                 cb(null, require('./Abort'))
-	//               }, 'abort')
-	//             }
-	//           } />
-	//     <Route path="/repo" getComponent={
-	//             (nextState, cb)=>{
-	//               require.ensure([], (require) => {
-	//                 console.log('---');
-	//                 cb(null, require('./Repo'))
-	//               }, 'repo')
-	//             }
-	//           } />
+	//   <Route path="/" component={App} onEnter={autoCertification}>
+	//     <IndexRoute component={Abort} />
+	//     <Route path="/abort" component={Abort} onEnter={autoCertification}/>
+	//     <Route path="/repo" component={Repo} onEnter={autoCertification}/>
 	//   </Route>
-	//     <Route path="*" getComponent={
-	//             (nextState, cb)=>{
-	//               require.ensure([], (require) => {
-	//                 console.log('---');
-	//                 cb(null, require('./NotFound'))
-	//               }, 'notFound')
-	//             }
-	//           } />
+	//     <Route path="*" component={NotFound} onEnter={autoCertification}/>
 	//   </Router>
 	// )
 
@@ -246,6 +254,10 @@
 
 	var _LazyImg2 = _interopRequireDefault(_LazyImg);
 
+	var _SliderImgs = __webpack_require__(9);
+
+	var _SliderImgs2 = _interopRequireDefault(_SliderImgs);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -269,8 +281,7 @@
 	  _createClass(App, [{
 	    key: "componentDidMount",
 	    value: function componentDidMount() {
-	      __webpack_require__(9);
-	      // import from "./App.scss";
+	      __webpack_require__(10);
 	    }
 	  }, {
 	    key: "_goAbort",
@@ -280,92 +291,19 @@
 	  }, {
 	    key: "render",
 	    value: function render() {
-	      var imgs2 = ["http://www.gaopinimages.com/webres/upload/20161128/1480324741734.jpg", "http://image4.app.gaopinimages.com/THUMBNAIL/240/a8/d0/42/2b/133204498442.jpg", "http://image1.app.gaopinimages.com/THUMBNAIL/240/74/b4/4e/21/133204498470.jpg", "http://image2.app.gaopinimages.com/THUMBNAIL/240/08/38/21/91/133204498522.jpg", "http://image3.app.gaopinimages.com/THUMBNAIL/240/14/c1/fe/4e/133204498755.jpg", "http://image4.app.gaopinimages.com/THUMBNAIL/240/d1/9a/89/3e/133204499736.jpg", "http://image1.app.gaopinimages.com/THUMBNAIL/240/ee/f2/a5/3e/133204500661.jpg", "http://image2.app.gaopinimages.com/THUMBNAIL/240/c0/cd/83/ee/133204500712.jpg", "http://image3.app.gaopinimages.com/THUMBNAIL/240/66/3c/de/d4/133204500714.jpg", "http://image4.app.gaopinimages.com/THUMBNAIL/240/9d/bf/8e/ed/133204500747.jpg", "http://image1.app.gaopinimages.com/THUMBNAIL/240/aa/9b/80/d4/133204501366.jpg", "http://www.gaopinimages.com/webres/upload/20161128/1480321496265.jpg", "http://image2.app.gaopinimages.com/THUMBNAIL/240/c6/79/e2/b7/133205296207.jpg", "http://image3.app.gaopinimages.com/THUMBNAIL/240/00/8a/52/71/133205296230.jpg", "http://image4.app.gaopinimages.com/THUMBNAIL/240/84/45/43/e0/133205296850.jpg", "http://image1.app.gaopinimages.com/THUMBNAIL/240/4a/ff/ae/54/133205296870.jpg"];
+	      var imgs = ["http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i1/TB1n3rZHFXXXXX9XFXXXXXXXXXX_!!0-item_pic.jpg_320x320q60.jpg", "http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i1/TB1n3rZHFXXXXX9XFXXXXXXXXXX_!!0-item_pic.jpg_320x320q60.jpg", "http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i1/TB1n3rZHFXXXXX9XFXXXXXXXXXX_!!0-item_pic.jpg_320x320q60.jpg"];
+	      var imgs2 = [];
 	      return _react2.default.createElement(
 	        "div",
 	        null,
+	        _react2.default.createElement(_SliderImgs2.default, { imgs: imgs, initClass: "sss1" }),
+	        _react2.default.createElement(_SliderImgs2.default, { imgs: imgs, initClass: "sss2" }),
 	        _react2.default.createElement(
-	          "button",
-	          { onClick: this.goAbort },
-	          "hello"
+	          _reactRouter.Link,
+	          { to: "/abort2", activeStyle: { color: "gray" } },
+	          " Abort2"
 	        ),
-	        _react2.default.createElement(
-	          "div",
-	          { className: "div", "data-title": "NEW", activeStyle: { color: "red" } },
-	          "Hello World2"
-	        ),
-	        _react2.default.createElement(
-	          "ul",
-	          null,
-	          _react2.default.createElement(
-	            "li",
-	            null,
-	            _react2.default.createElement(
-	              _reactRouter.Link,
-	              { to: "/abort", activeStyle: { color: "gray" } },
-	              " Abort"
-	            )
-	          ),
-	          _react2.default.createElement(
-	            "li",
-	            null,
-	            _react2.default.createElement(
-	              _reactRouter.Link,
-	              { to: "/repo/2", activeStyle: { color: "gray" } },
-	              " repo"
-	            )
-	          ),
-	          _react2.default.createElement(
-	            "li",
-	            null,
-	            _react2.default.createElement(
-	              _reactRouter.Link,
-	              { to: "/abort2", activeStyle: { color: "gray" } },
-	              " Abort2"
-	            )
-	          )
-	        ),
-	        _react2.default.createElement(
-	          "ul",
-	          null,
-	          _react2.default.createElement(
-	            "li",
-	            null,
-	            _react2.default.createElement(
-	              _NavLink2.default,
-	              { to: "/abort", activeStyle: { color: "red" } },
-	              " ",
-	              _react2.default.createElement(
-	                "div",
-	                null,
-	                "ddddd"
-	              ),
-	              "Abort"
-	            )
-	          ),
-	          _react2.default.createElement(
-	            "li",
-	            null,
-	            _react2.default.createElement(
-	              _NavLink2.default,
-	              { to: "/repo/1", activeStyle: { color: "red" } },
-	              " repo"
-	            )
-	          ),
-	          _react2.default.createElement(
-	            "li",
-	            null,
-	            _react2.default.createElement(
-	              _NavLink2.default,
-	              { to: "/abort2", activeStyle: { color: "red" } },
-	              " Abort2"
-	            )
-	          )
-	        ),
-	        this.props.children,
-	        imgs2.map(function (item, index) {
-	          return _react2.default.createElement(_LazyImg2.default, { key: index, defaultClass: "lazy-img", originImg: item });
-	        })
+	        this.props.children
 	      );
 	    }
 	  }]);
@@ -583,13 +521,209 @@
 /* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var SliderImgs = function (_Component) {
+	  _inherits(SliderImgs, _Component);
+
+	  function SliderImgs(props) {
+	    _classCallCheck(this, SliderImgs);
+
+	    var _this = _possibleConstructorReturn(this, (SliderImgs.__proto__ || Object.getPrototypeOf(SliderImgs)).call(this, props));
+
+	    _this.state = {
+	      curIndex: 0
+	    };
+	    _this.static = {
+	      count: 0,
+	      clearTimeout: "",
+	      touchPos: {
+	        pageX: 0,
+	        pageY: 0,
+	        moveX: 0
+	      }
+	    };
+	    return _this;
+	  }
+
+	  _createClass(SliderImgs, [{
+	    key: "componentDidMount",
+	    value: function componentDidMount() {
+	      // require('./App.scss');
+	      var initClass = this.props.initClass;
+
+	      this.static.count = document.querySelectorAll("." + initClass)[0].firstChild.children.length;
+	      this.slideStartEvent = this._slideStartEvent.bind(this, document.querySelectorAll("." + initClass)[0]);
+	      this.slideMoveEvent = this._slideMoveEvent.bind(this, document.querySelectorAll("." + initClass)[0]);
+	      this.slideEndEvent = this._slideEndEvent.bind(this, document.querySelectorAll("." + initClass)[0]);
+
+	      document.querySelectorAll("." + initClass)[0].addEventListener("touchstart", this.slideStartEvent, true);
+	      document.querySelectorAll("." + initClass)[0].addEventListener("touchmove", this.slideMoveEvent, true);
+	      document.querySelectorAll("." + initClass)[0].addEventListener("touchend", this.slideEndEvent, true);
+	    }
+	  }, {
+	    key: "_slideStartEvent",
+	    value: function _slideStartEvent(target, e) {
+	      e.stopPropagation();
+	      target.firstChild.style.transitionDuration = "";
+	      this.static.touchPos.pageX = e.targetTouches[0].pageX;
+	      this.static.touchPos.pageY = e.targetTouches[0].pageY;
+	      // const moveX = parseFloat(target.firstChild.style.transform.replace(/translate3d\((.*)px,(.*)px,(.*)px\)/,'$1'));
+	      // const moveX = parseFloat(target.firstChild.style.transform.replace(/translate\((.*)px\)/,'$1'));
+	      // const moveX = parseFloat(target.firstChild.style.WebkitTransform.replace(/translate\((.*)px\)/,'$1'));
+	      var moveX = new WebKitCSSMatrix(target.firstChild.style.WebkitTransform).m41;
+	      isNaN(moveX) ? this.static.touchPos.moveX = 0 : this.static.touchPos.moveX = moveX;
+	    }
+
+	    //事件
+
+	  }, {
+	    key: "_slideMoveEvent",
+	    value: function _slideMoveEvent(target, e) {
+	      e.stopPropagation();
+	      var x = e.targetTouches[0].pageX - this.static.touchPos.pageX + this.static.touchPos.moveX;
+	      if (target.firstChild.style.transform) {
+	        // target.firstChild.style.transitionDuration = "0ms";
+	        // target.firstChild.style.transform = "translate("+x+"px)";
+	        // target.firstChild.style.transform = "translate3d("+x+"px, 0px, 0px)";
+	        target.firstChild.style.WebkitTransitionDuration = "0ms";
+	        target.firstChild.style.WebkitTransform = "translate(" + x + "px)";
+	      } else {
+	        // target.firstChild.style.transitionDuration = "0ms";
+	        // target.firstChild.style.transform = "translate(0)";
+	        target.firstChild.style.WebkitTransitionDuration = "0ms";
+	        target.firstChild.style.WebkitTransform = "translate(0)";
+	        // target.firstChild.style.transform = "translate3d("+x+"px, 0px, 0px)";
+	      }
+	    }
+	    //事件
+
+	  }, {
+	    key: "_slideEndEvent",
+	    value: function _slideEndEvent(target, e) {
+	      e.stopPropagation();
+	      target.scrollLeft = 0;
+	      this.static.touchPos = { pageX: 0, pageY: 0 };
+	      var width = target.offsetWidth;
+	      // const moveEndY = parseFloat(target.firstChild.style.transform.replace(/translate3d\((.*)px,(.*)px,(.*)px\)/,'$1'));
+	      // const moveEndY = parseFloat(target.firstChild.style.transform.replace(/translate\((.*)px\)/,'$1'));
+	      // const moveEndY = parseFloat(target.firstChild.style.WebkitTransform.replace(/translate\((.*)px\)/,'$1'));
+	      var moveEndY = new WebKitCSSMatrix(target.firstChild.style.WebkitTransform).m41;
+	      var curCount = this.posLeft(width, moveEndY);
+	      this.setState({
+	        curIndex: Math.abs(curCount)
+	      });
+	      setTimeout(function () {
+	        target.firstChild.style.transitionDuration = "";
+	        // target.firstChild.style.transform = "translate3d("+(curCount*width)+"px, 0px, 0px)";
+	        target.firstChild.style.transform = "translate(" + curCount * width + "px)";
+	        target.firstChild.style.WebkitTransform = "translate(" + curCount * width + "px)";
+	      }, 0);
+	    }
+	  }, {
+	    key: "posLeft",
+	    value: function posLeft(width, left) {
+	      var curCount = Math.floor(left / width + 0.5);
+	      if (curCount > 0) {
+	        curCount = 0;
+	      } else if (curCount + this.static.count < 1) {
+	        curCount = 1 - this.static.count;
+	      }
+	      return curCount;
+	    }
+	  }, {
+	    key: "removeEvent",
+	    value: function removeEvent() {
+	      var initClass = this.props.initClass;
+
+	      document.querySelectorAll("." + initClass)[0].removeEventListener("touchstart", this.slideStartEvent, true);
+	      document.querySelectorAll("." + initClass)[0].removeEventListener("touchmove", this.slideMoveEvent, true);
+	      document.querySelectorAll("." + initClass)[0].removeEventListener("touchend", this.slideEndEvent, true);
+	    }
+	  }, {
+	    key: "componentWillUnmount",
+	    value: function componentWillUnmount() {
+	      this.removeEvent();
+	    }
+	  }, {
+	    key: "render",
+	    value: function render() {
+	      var _this2 = this;
+
+	      var _props = this.props,
+	          imgs = _props.imgs,
+	          initClass = _props.initClass;
+
+	      return _react2.default.createElement(
+	        "div",
+	        { className: "slider-container " + initClass },
+	        _react2.default.createElement(
+	          "div",
+	          { className: "slider" },
+	          imgs.map(function (item, index) {
+	            return _react2.default.createElement(
+	              "div",
+	              { key: index },
+	              _react2.default.createElement("img", { src: item })
+	            );
+	          })
+	        ),
+	        _react2.default.createElement(
+	          "div",
+	          { className: "slider-pagination" },
+	          imgs.map(function (item, index) {
+	            return _react2.default.createElement("span", { key: index, className: _this2.state.curIndex == index ? "active" : "" });
+	          })
+	        )
+	      );
+	    }
+	  }]);
+
+	  return SliderImgs;
+	}(_react.Component);
+
+	exports.default = SliderImgs;
+
+
+	SliderImgs.defaultProps = {
+	  initClass: "img-slider",
+	  imgs: []
+	};
+
+	SliderImgs.propTypes = {
+	  initClass: _react.PropTypes.string,
+	  imgs: _react.PropTypes.array
+	};
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(10);
+	var content = __webpack_require__(11);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(12)(content, {});
+	var update = __webpack_require__(13)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -606,21 +740,21 @@
 	}
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(11)();
+	exports = module.exports = __webpack_require__(12)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "* {\n  margin: 0;\n  padding: 0;\n  margin: auto 0; }\n  * .lazy-img {\n    width: 200px;\n    height: 200px; }\n  * .div {\n    position: relative;\n    height: 200px;\n    width: 200px;\n    background-color: gray; }\n    * .div:before {\n      content: \"\";\n      position: absolute;\n      width: 100%;\n      height: 100%;\n      background: linear-gradient(45deg, transparent calc(90% - 2rem), blue 0, blue 90%, transparent 0); }\n    * .div:after {\n      content: attr(data-title) \" \";\n      position: absolute;\n      top: 10%;\n      left: 35.86%;\n      width: 100%;\n      height: 2rem;\n      line-height: 2rem;\n      font-size: 1.5rem;\n      text-align: center;\n      color: #FFF;\n      transform: rotate(9deg);\n      -webkit-transform: rotate(45deg); }\n", ""]);
+	exports.push([module.id, "* {\n  margin: 0;\n  padding: 0;\n  margin: auto 0; }\n  * .slider-container {\n    position: relative;\n    width: 100%;\n    overflow: hidden;\n    background-color: #eee; }\n    * .slider-container .slider {\n      display: -webkit-box;\n      transition-duration: 300ms;\n      -webkit-transition-duration: 300ms; }\n      * .slider-container .slider div {\n        width: 100%; }\n        * .slider-container .slider div img {\n          width: 100%; }\n    * .slider-container .slider-pagination {\n      height: 20px;\n      width: 100%;\n      text-align: center;\n      bottom: 5px;\n      position: absolute; }\n      * .slider-container .slider-pagination span {\n        display: inline-block;\n        height: 10px;\n        width: 10px;\n        background-color: rgba(0, 0, 0, 0.3);\n        margin: 0 5px;\n        border-radius: 5px; }\n        * .slider-container .slider-pagination span.active {\n          background-color: red; }\n  * .lazy-img {\n    width: 200px;\n    height: 200px; }\n  * .div {\n    position: relative;\n    height: 200px;\n    width: 200px;\n    background-color: gray; }\n    * .div:before {\n      content: \"\";\n      position: absolute;\n      width: 100%;\n      height: 100%;\n      background: linear-gradient(45deg, transparent calc(90% - 2rem), blue 0, blue 90%, transparent 0); }\n    * .div:after {\n      content: attr(data-title) \" \";\n      position: absolute;\n      top: 10%;\n      left: 35.86%;\n      width: 100%;\n      height: 2rem;\n      line-height: 2rem;\n      font-size: 1.5rem;\n      text-align: center;\n      color: #FFF;\n      transform: rotate(9deg);\n      -webkit-transform: rotate(45deg); }\n", ""]);
 
 	// exports
 
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports) {
 
 	/*
@@ -676,7 +810,7 @@
 
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -928,7 +1062,7 @@
 
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -977,7 +1111,7 @@
 	exports.default = Abort;
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1034,83 +1168,14 @@
 	exports.default = NotFound;
 
 /***/ },
-/* 15 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Repo = function (_Component) {
-	  _inherits(Repo, _Component);
-
-	  function Repo(props) {
-	    _classCallCheck(this, Repo);
-
-	    var _this = _possibleConstructorReturn(this, (Repo.__proto__ || Object.getPrototypeOf(Repo)).call(this, props));
-
-	    _this.goBack = _this._goBack.bind(_this);
-	    return _this;
-	  }
-
-	  _createClass(Repo, [{
-	    key: "_goBack",
-	    value: function _goBack() {
-	      this.context.router.push("/");
-	    }
-	  }, {
-	    key: "render",
-	    value: function render() {
-	      var id = this.props.params.id;
-
-	      return _react2.default.createElement(
-	        "div",
-	        null,
-	        "repo:",
-	        id,
-	        _react2.default.createElement(
-	          "button",
-	          { onClick: this.goBack },
-	          "go back"
-	        )
-	      );
-	    }
-	  }]);
-
-	  return Repo;
-	}(_react.Component);
-
-	exports.default = Repo;
-
-
-	Repo.contextTypes = {
-	  router: _react2.default.PropTypes.object
-	};
-
-/***/ },
-/* 16 */
+/* 16 */,
+/* 17 */
 /***/ function(module, exports) {
 
 	module.exports = require("express");
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports) {
 
 	module.exports = require("path");

@@ -9,15 +9,30 @@ import {Router,Route,browserHistory,IndexRoute} from "react-router";
 import App from './App';
 import Abort from './Abort';
 import NotFound from './NotFound';
-import Repo from './Repo';
+// import Repo from './Repo';
 
+
+function autoCertification(nextState, replaceState) {
+  console.log('----');
+  console.log(nextState.location.pathname);
+}
 
 module.exports = (
   <Router history={browserHistory}>
   <Route path="/" component={App}>
-    <IndexRoute component={Abort}/>
+    <IndexRoute component={Abort} />
     <Route path="/abort" component={Abort}/>
-    <Route path="/repo" component={Repo}/>
+    {/* <Route path="/repo/:id" component={Repo}/> */}
+    <Route path="/repo/:id" getComponent={
+      // (location, cb) => {
+      //   cb(null, require('./Repo'))
+      // }
+      (nextState, cb)=>{
+        require.ensure([], (require) => {
+          cb(null, require('./Repo'))
+        }, 'app')
+      }
+    }/>
   </Route>
     <Route path="*" component={NotFound}/>
   </Router>
@@ -25,46 +40,11 @@ module.exports = (
 
 // module.exports = (
 //   <Router history={browserHistory}>
-//   <Route path="/" getComponent={
-//           (nextState, cb)=>{
-//             require.ensure([], (require) => {
-//               console.log('---');
-//               cb(null, require('./App'))
-//             }, 'app')
-//           }
-//         } >
-//     <IndexRoute getComponent={
-//             (nextState, cb)=>{
-//               require.ensure([], (require) => {
-//                 console.log('---');
-//                 cb(null, require('./Abort'))
-//               }, 'abort')
-//             }
-//           } />
-//     <Route path="/abort" getComponent={
-//             (nextState, cb)=>{
-//               require.ensure([], (require) => {
-//                 console.log('---');
-//                 cb(null, require('./Abort'))
-//               }, 'abort')
-//             }
-//           } />
-//     <Route path="/repo" getComponent={
-//             (nextState, cb)=>{
-//               require.ensure([], (require) => {
-//                 console.log('---');
-//                 cb(null, require('./Repo'))
-//               }, 'repo')
-//             }
-//           } />
+//   <Route path="/" component={App} onEnter={autoCertification}>
+//     <IndexRoute component={Abort} />
+//     <Route path="/abort" component={Abort} onEnter={autoCertification}/>
+//     <Route path="/repo" component={Repo} onEnter={autoCertification}/>
 //   </Route>
-//     <Route path="*" getComponent={
-//             (nextState, cb)=>{
-//               require.ensure([], (require) => {
-//                 console.log('---');
-//                 cb(null, require('./NotFound'))
-//               }, 'notFound')
-//             }
-//           } />
+//     <Route path="*" component={NotFound} onEnter={autoCertification}/>
 //   </Router>
 // )

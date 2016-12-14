@@ -11,6 +11,7 @@ export default class Repo extends Component{
   }
   render(){
     const {id} = this.props.params;
+    console.log('---------Repo-------');
     return (
       <div>
         repo:{id}
