@@ -37,7 +37,7 @@
 /******/ 	__webpack_require__.e = function requireEnsure(chunkId, callback) {
 /******/ 		// "1" is the signal for "already loaded"
 /******/ 		if(!installedChunks[chunkId]) {
-/******/ 			var chunk = require(".//statics/js/" + ({"1":"app","2":"abort","3":"Repo","4":"NotFound"}[chunkId]||chunkId) + ".server." + {"1":"3a13a","2":"f113e","3":"9eb3e","4":"8cf92"}[chunkId] + ".chunk.js");
+/******/ 			var chunk = require(".//statics/chunkJs/" + ({"1":"app","2":"abort","3":"Repo","4":"NotFound"}[chunkId]||chunkId) + ".server." + {"1":"3a13a","2":"f113e","3":"9eb3e","4":"8cf92"}[chunkId] + ".chunk.js");
 /******/ 			var moreModules = chunk.modules, chunkIds = chunk.ids;
 /******/ 			for(var moduleId in moreModules) {
 /******/ 				modules[moduleId] = moreModules[moduleId];
@@ -91,7 +91,7 @@
 	var app = express();
 
 	// serve our static stuff like index.css
-	app.use(express.static(path.join(__dirname, "./statics")));
+	app.use(express.static(path.join(__dirname, "./statics/chunkJs")));
 	app.use(express.static(path.join(__dirname, "./statics")));
 
 	// send all requests to index.html so browserHistory in React Router works
@@ -112,7 +112,7 @@
 	});
 
 	function renderPage(appHtml) {
-	  return '\n    <!doctype html public="storage">\n    <html>\n    <meta charset=utf-8/>\n    <title>My First React Router App</title>\n    <div id=app>' + appHtml + '</div>\n    <script src="/js/bundle.js"></script>\n   ';
+	  return '\n    <!doctype html public="storage">\n    <html>\n    <meta charset=utf-8/>\n    <title>My First React Router App</title>\n    <div id=app>' + appHtml + '</div>\n    <script src="/bundle.js"></script>\n   ';
 	}
 
 	var PORT = process.env.PORT || 8080;

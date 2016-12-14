@@ -5,7 +5,7 @@ var path = require('path'),
 module.exports = {
   entry: './index.jsx',
   output: {
-    path: 'statics/js',
+    path: 'statics/chunkJs',
     filename: 'bundle.js',
     publicPath: '/',
     chunkFilename: '[name].[chunkhash:5].chunk.js',

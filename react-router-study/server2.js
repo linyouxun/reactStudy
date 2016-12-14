@@ -12,7 +12,7 @@ var path = require('path');
 var app = express()
 
 // serve our static stuff like index.css
-app.use(express.static(path.join(__dirname, "./statics")));
+app.use(express.static(path.join(__dirname, "./statics/chunkJs")));
 app.use(express.static(path.join(__dirname, "./statics")));
 
 // send all requests to index.html so browserHistory in React Router works
@@ -39,7 +39,7 @@ function renderPage(appHtml) {
     <meta charset=utf-8/>
     <title>My First React Router App</title>
     <div id=app>${appHtml}</div>
-    <script src="/js/bundle.js"></script>
+    <script src="/bundle.js"></script>
    `
 }
 
