@@ -9,6 +9,7 @@ const history = useRouterHistory(createHistory)({basename: ''});
 import routes from './modules/routes'
 
 render(
+  // <Router routes={routes} history={browserHistory}/>,
   <Router routes={routes} history={history}/>,
   document.getElementById('app')
 )

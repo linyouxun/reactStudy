@@ -34,9 +34,13 @@ app.get('/', (req, res) => {
 
 function renderPage(appHtml) {
   return `
-    <!doctype html public="storage">
+    <!doctype html public "storage">
     <html>
-    <meta charset=utf-8/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
     <title>My First React Router App</title>
     <div id=app>${appHtml}</div>
     <script src="/bundle.js"></script>

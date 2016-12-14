@@ -7,9 +7,10 @@ module.exports = {
 
   output: {
     path: __dirname,
+    // path: "statics/chunkJs",
     filename: 'server.bundle.js',
     publicPath: '/',
-    chunkFilename: '/statics/chunkJs/[name].server.[chunkhash:5].chunk.js',
+    // chunkFilename: '/statics/chunkJs/[name].server.[chunkhash:5].chunk.js',
   },
 
   target: 'node',
