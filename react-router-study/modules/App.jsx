@@ -3,8 +3,8 @@ import {Link} from "react-router";
 import NavLink from "./NavLink";
 import LazyImg from "./components/LazyImg";
 import SliderImgs from "./components/SliderImgs";
-
-export default class App extends Component{
+// export default
+ class App extends Component{
   constructor (props) {
    super(props);
    this.goAbort = this._goAbort.bind(this);
@@ -31,10 +31,10 @@ export default class App extends Component{
     ]
     return (
       <div>
-        <SliderImgs imgs={imgs} initClass='sss1'/>
-        <SliderImgs imgs={imgs} initClass='sss2'/>
+        {/*<SliderImgs imgs={imgs} initClass='sss1'/>
+        <SliderImgs imgs={imgs} initClass='sss2'/>*/}
         <Link to="/abort2" activeStyle={{color:"gray"}}> Abort2</Link>
-        {/* <button onClick={this.goAbort}>hello</button>
+        <button onClick={this.goAbort}>hello</button>
         <div className="div" data-title="NEW" activeStyle={{color:"red"}}>
           Hello World2
         </div>
@@ -59,7 +59,7 @@ export default class App extends Component{
           <li>
             <NavLink to="/abort2" activeStyle={{color:"red"}}> Abort2</NavLink>
           </li>
-        </ul> */}
+        </ul>
         {/* nihao */}
         {this.props.children}
         {/* nihao */}
@@ -76,3 +76,5 @@ export default class App extends Component{
 App.contextTypes = {
   router: React.PropTypes.object
 };
+
+module.exports = App;

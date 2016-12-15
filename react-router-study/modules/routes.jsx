@@ -6,9 +6,9 @@ import {Router,Route,browserHistory,IndexRoute} from "react-router";
 // import {createHistory} from 'history';
 // const history = useRouterHistory(createHistory)({basename: ''});
 
-import App from './App';
-import Abort from './Abort';
-import NotFound from './NotFound';
+// import App from './App';
+// import Abort from './Abort';
+// import NotFound from './NotFound';
 // import Repo from './Repo';
 
 
@@ -17,26 +17,71 @@ function autoCertification(nextState, replaceState) {
   console.log(nextState.location.pathname);
 }
 
-module.exports = (
-  <Router history={browserHistory}>
-  <Route path="/" component={App}>
-    <IndexRoute component={Abort} />
-    <Route path="/abort" component={Abort}/>
-    {/* <Route path="/repo/:id" component={Repo}/> */}
-    <Route path="/repo/:id" getComponent={
-      // (location, cb) => {
-      //   cb(null, require('./Repo'))
-      // }
-      (nextState, cb)=>{
-        require.ensure([], (require) => {
-          cb(null, require('./Repo'))
-        }, 'app')
+const routes = [
+  {
+    path:"/",
+    getComponents(location, callback) {
+      require.ensure([], function (require) {
+        callback(null, require('./App'))
+      })
+    },
+    indexRoute:{
+      getComponents(location, callback) {
+        require.ensure([], function (require) {
+          callback(null, require('./Abort').default)
+        })
+      },
+    },
+    childRoutes:[
+      {
+        path:"abort",
+        getComponents(location, callback) {
+          require.ensure([], function (require) {
+            callback(null, require('./Abort').default)
+          })
+        },
+      },{
+        path:"repo/:id",
+        getComponents(location, callback) {
+          require.ensure([], function (require) {
+            callback(null, require('./Repo'))
+          })
+        }
       }
-    }/>
-  </Route>
-    <Route path="*" component={NotFound}/>
-  </Router>
-)
+    ]
+  },
+  {
+    path:"*",
+    getComponents(location, callback) {
+      require.ensure([], function (require) {
+        callback(null, require('./NotFound'))
+      })
+    }
+  }
+]
+
+module.exports = routes;
+
+// module.exports = (
+//   <Router history={browserHistory}>
+//   <Route path="/" component={App}>
+//     <IndexRoute component={Abort} />
+//     <Route path="/abort" component={Abort}/>
+//     {/* <Route path="/repo/:id" component={Repo}/> */}
+    // <Route path="/repo/:id" getComponent={
+    //   // (location, cb) => {
+    //   //   cb(null, require('./Repo'))
+    //   // }
+    //   (nextState, cb)=>{
+    //     require.ensure([], (require) => {
+    //       cb(null, require('./Repo'))
+    //     }, 'app')
+    //   }
+//     }/>
+//   </Route>
+//     <Route path="*" component={NotFound}/>
+//   </Router>
+// )
 
 // module.exports = (
 //   <Router history={browserHistory}>

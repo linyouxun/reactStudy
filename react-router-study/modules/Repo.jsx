@@ -1,7 +1,7 @@
 import React ,{Component} from "react";
 
 
-export default class Repo extends Component{
+class Repo extends Component{
   constructor (props) {
     super(props);
     this.goBack = this._goBack.bind(this);
@@ -24,3 +24,5 @@ export default class Repo extends Component{
 Repo.contextTypes={
   router: React.PropTypes.object
 }
+
+module.exports = Repo;

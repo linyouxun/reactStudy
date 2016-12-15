@@ -1,6 +1,6 @@
 var fs = require('fs')
 var path = require('path')
-// var webpack = require('webpack')
+var webpack = require('webpack')
 module.exports = {
 
   entry: path.resolve(__dirname, 'server2.js'),
@@ -47,6 +47,9 @@ module.exports = {
   plugins: [
     // new webpack.optimize.CommonsChunkPlugin(/* chunkName= */"vendor", /* filename= */"vendor.bundle.js")
     // new webpack.optimize.CommonsChunkPlugin()
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+    })
   ]
 
 }
