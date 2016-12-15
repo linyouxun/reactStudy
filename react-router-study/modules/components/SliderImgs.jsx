@@ -27,34 +27,47 @@ export default class SliderImgs extends Component {
     document.querySelectorAll("."+initClass)[0].addEventListener("touchmove",this.slideMoveEvent,true);
     document.querySelectorAll("."+initClass)[0].addEventListener("touchend",this.slideEndEvent,true);
   }
+
   _slideStartEvent(target,e){
     e.stopPropagation();
     target.firstChild.style.transitionDuration = "";
     this.static.touchPos.pageX = e.targetTouches[0].pageX;
     this.static.touchPos.pageY = e.targetTouches[0].pageY;
-    // const moveX = parseFloat(target.firstChild.style.transform.replace(/translate3d\((.*)px,(.*)px,(.*)px\)/,'$1'));
-    // const moveX = parseFloat(target.firstChild.style.transform.replace(/translate\((.*)px\)/,'$1'));
-    // const moveX = parseFloat(target.firstChild.style.WebkitTransform.replace(/translate\((.*)px\)/,'$1'));
-    const moveX = new WebKitCSSMatrix(target.firstChild.style.WebkitTransform).m41;
-    isNaN(moveX)?(this.static.touchPos.moveX = 0):(this.static.touchPos.moveX = moveX);
+    this.static.touchPos.moveX = this.getTranslate(target.firstChild);
   }
+
+  getTranslate(el){
+    let /*matrix,*/ curTransform, curStyle, transformMatrix;
+    curStyle = window.getComputedStyle(el, null);
+    if (window.WebKitCSSMatrix) {
+        transformMatrix = new WebKitCSSMatrix(curStyle.webkitTransform === 'none' ? '' : curStyle.webkitTransform);
+        curTransform = transformMatrix.m41
+    }
+    else {
+      alert("你的手机暂时不支持滑动查看图片");
+      this.removeEvent();
+    }
+    return curTransform||0;
+  }
+
 
   //事件
   _slideMoveEvent(target,e){
     e.stopPropagation();
     const x = e.targetTouches[0].pageX - this.static.touchPos.pageX + this.static.touchPos.moveX;
-    if(target.firstChild.style.transform){
-      // target.firstChild.style.transitionDuration = "0ms";
-      // target.firstChild.style.transform = "translate("+x+"px)";
-      // target.firstChild.style.transform = "translate3d("+x+"px, 0px, 0px)";
+    if(target.firstChild.style.WebkitTransform){
       target.firstChild.style.WebkitTransitionDuration = "0ms";
-      target.firstChild.style.WebkitTransform = "translate("+x+"px)";
+      target.firstChild.style.WebkitTransform = "translate3d("+x+"px, 0px, 0px)";
     }else{
-      // target.firstChild.style.transitionDuration = "0ms";
-      // target.firstChild.style.transform = "translate(0)";
       target.firstChild.style.WebkitTransitionDuration = "0ms";
-      target.firstChild.style.WebkitTransform = "translate(0)";
-      // target.firstChild.style.transform = "translate3d("+x+"px, 0px, 0px)";
+      target.firstChild.style.WebkitTransform = "translate3d(0px, 0px, 0px)";
+      if(target.firstChild.style.transform){
+        target.firstChild.style.transitionDuration = "0ms";
+        target.firstChild.style.transform = "translate3d("+x+"px, 0px, 0px)";
+      }else{
+        target.firstChild.style.transitionDuration = "0ms";
+        target.firstChild.style.transform = "translate3d(0px, 0px, 0px)";
+      }
     }
   }
   //事件
@@ -63,19 +76,14 @@ export default class SliderImgs extends Component {
     target.scrollLeft = 0;
     this.static.touchPos={pageX:0,pageY:0,};
     const width = target.offsetWidth;
-    // const moveEndY = parseFloat(target.firstChild.style.transform.replace(/translate3d\((.*)px,(.*)px,(.*)px\)/,'$1'));
-    // const moveEndY = parseFloat(target.firstChild.style.transform.replace(/translate\((.*)px\)/,'$1'));
-    // const moveEndY = parseFloat(target.firstChild.style.WebkitTransform.replace(/translate\((.*)px\)/,'$1'));
-    const moveEndY = new WebKitCSSMatrix(target.firstChild.style.WebkitTransform).m41;
+    const moveEndY = this.getTranslate(target.firstChild);
     const curCount = this.posLeft(width,moveEndY);
     this.setState({
       curIndex:Math.abs(curCount),
     });
     setTimeout(()=>{
-      target.firstChild.style.transitionDuration = "";
-      // target.firstChild.style.transform = "translate3d("+(curCount*width)+"px, 0px, 0px)";
-      target.firstChild.style.transform = "translate("+(curCount*width)+"px)";
-      target.firstChild.style.WebkitTransform = "translate("+(curCount*width)+"px)";
+      target.firstChild.style.WebkitTransitionDuration = "";
+      target.firstChild.style.WebkitTransform = "translate3d("+(curCount*width)+"px, 0px, 0px)";
     },0);
   }
   posLeft(width,left){
