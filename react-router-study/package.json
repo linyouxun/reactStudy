@@ -6,7 +6,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production && npm run start:prod || npm run start:dev",
     "start:client": "webpack-dev-server --inline --content-base . --history-api-fallback --host 0.0.0.0 --port 9090",
-    "start:prod": "npm run build && cross-env NODE_ENV=production node server2.js",
+    "start:prod": "npm run build && cross-env NODE_ENV=production node server.bundle.js",
     "start:dev": "npm run build && cross-env NODE_ENV=dev node server.bundle.js",
     "build:client": "webpack",
     "build:server": "webpack --config webpack.server.config.js",

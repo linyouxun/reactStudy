@@ -9,7 +9,9 @@ import SliderImgs from "./components/SliderImgs";
    super(props);
    this.goAbort = this._goAbort.bind(this);
  }
-
+  componentWillMount(){
+    console.log('--componentWillMount--');
+  }
   componentDidMount(){
     require('./App.scss');
   }
