@@ -1,7 +1,8 @@
 import React from 'react';
 import { render } from 'react-dom';
-// import {match,Router,Route,browserHistory,IndexRoute} from "react-router";
-// browserHistory  hashHistory
+// import {match,Router,Route,createMemoryHistory,IndexRoute} from "react-router";
+// const history = createMemoryHistory(location);
+// browserHistory  hashHistory createMemoryHistory
 import {match,Router, Route, IndexRedirect, useRouterHistory, Redirect,IndexRoute} from 'react-router';
 import {createHistory} from 'history';
 const history = useRouterHistory(createHistory)({basename: ''});

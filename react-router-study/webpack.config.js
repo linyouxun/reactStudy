@@ -1,6 +1,7 @@
 var path = require('path'),
     ExtractTextPlugin = require('extract-text-webpack-plugin'),
-    autoprefixer = require('autoprefixer');
+    autoprefixer = require('autoprefixer'),
+    webpack = require('webpack');
 
 module.exports = {
   entry: './index.jsx',
@@ -34,4 +35,11 @@ module.exports = {
   // plugins: [
   //   new ExtractTextPlugin('./modules/App.scss')
   // ],
+  plugins: [
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
+    })
+  ],
 }
