@@ -3,8 +3,8 @@ import {Link} from "react-router";
 import NavLink from "./NavLink";
 import LazyImg from "./components/LazyImg";
 import SliderImgs from "./components/SliderImgs";
-// export default
- class App extends Component{
+
+ export default class App extends Component{
   constructor (props) {
    super(props);
    this.goAbort = this._goAbort.bind(this);
@@ -35,31 +35,31 @@ import SliderImgs from "./components/SliderImgs";
       <div>
         {/*<SliderImgs imgs={imgs} initClass='sss1'/>
         <SliderImgs imgs={imgs} initClass='sss2'/>*/}
-        <Link to="/abort2" activeStyle={{color:"gray"}}> Abort2</Link>
+        <Link to="/abort2"> Abort2</Link>
         <button onClick={this.goAbort}>hello</button>
-        <div className="div" data-title="NEW" activeStyle={{color:"red"}}>
+        <div className="div" data-title="NEW">
           Hello World2
         </div>
         <ul>
           <li>
-            <Link to="/abort" activeStyle={{color:"gray"}}> Abort</Link>
+            <Link to="/abort" > Abort</Link>
           </li>
           <li>
-            <Link to="/repo/2" activeStyle={{color:"gray"}}> repo</Link>
+            <Link to="/repo/2"> repo</Link>
           </li>
           <li>
-            <Link to="/abort2" activeStyle={{color:"gray"}}> Abort2</Link>
+            <Link to="/abort2" > Abort2</Link>
           </li>
         </ul>
         <ul>
           <li>
-            <NavLink to="/abort" activeStyle={{color:"red"}}> <div>ddddd</div>Abort</NavLink>
+            <NavLink to="/abort" > <div>ddddd</div>Abort</NavLink>
           </li>
           <li>
-            <NavLink to="/repo/1" activeStyle={{color:"red"}}> repo</NavLink>
+            <NavLink to="/repo/1"> repo</NavLink>
           </li>
           <li>
-            <NavLink to="/abort2" activeStyle={{color:"red"}}> Abort2</NavLink>
+            <NavLink to="/abort2" > Abort2</NavLink>
           </li>
         </ul>
         {/* nihao */}
@@ -79,4 +79,4 @@ App.contextTypes = {
   router: React.PropTypes.object
 };
 
-module.exports = App;
+// module.exports = App;

@@ -1,13 +1,16 @@
 import React ,{Component} from "react";
 
 
-class Repo extends Component{
+export default class Repo extends Component{
   constructor (props) {
     super(props);
     this.goBack = this._goBack.bind(this);
   }
   _goBack(){
     this.context.router.push("/");
+  }
+  componentWillMount(){
+    console.log('--componentWillMount--');
   }
   render(){
     const {id} = this.props.params;
@@ -25,4 +28,4 @@ Repo.contextTypes={
   router: React.PropTypes.object
 }
 
-module.exports = Repo;
+// module.exports = Repo;

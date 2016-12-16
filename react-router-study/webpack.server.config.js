@@ -3,14 +3,14 @@ var path = require('path')
 var webpack = require('webpack')
 module.exports = {
 
-  entry: path.resolve(__dirname, 'server2.js'),
+  entry: path.resolve(__dirname, './server/server.js'),
 
   output: {
     path: __dirname,
-    // path: "statics/chunkJs",
+    path: "server/chunkJs",
     filename: 'server.bundle.js',
     publicPath: '/',
-    chunkFilename: '/statics/chunkJs/[name].chunk.js',
+    chunkFilename: '[name].chunk.js',
     // chunkFilename: '/statics/chunkJs/[name].server.[chunkhash:5].chunk.js',
   },
 

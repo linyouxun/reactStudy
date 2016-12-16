@@ -3,9 +3,9 @@ import React from 'react';
 // we'll use this to render our app to an html string
 import { renderToString } from 'react-dom/server';
 // and these to match the url to routes and then render
-// import { match, RouterContext } from 'react-router';
-import { match, RoutingContext } from 'react-router';
-import routes from './modules/routes';
+import { match, RouterContext } from 'react-router';
+// import { match, RoutingContext } from 'react-router';
+import routes from '../modules/routes';
 
 var express = require('express');
 var path = require('path');
@@ -13,9 +13,8 @@ var path = require('path');
 var app = express()
 
 // serve our static stuff like index.css
-app.use(express.static(path.join(__dirname, "./statics/chunkJs")));
-app.use(express.static(path.join(__dirname, "./statics")));
-
+app.use(express.static(path.join(__dirname, "../statics/chunkJs")));
+app.use(express.static(path.join(__dirname, "../statics")));
 // send all requests to index.html so browserHistory in React Router works
 app.get('*', (req, res) => {
   // match the routes to the url
@@ -37,7 +36,7 @@ app.get('*', (req, res) => {
    } else if (redirectLocation) {
      res.redirect(302, redirectLocation.pathname + redirectLocation.search)
    } else if (renderProps) {
-     res.status(200).send(renderPage(renderToString(<RoutingContext {...renderProps} />)))
+     res.status(200).send(renderPage(renderToString(<RouterContext {...renderProps} />)))
    } else {
      res.status(404).send('Not found')
    }

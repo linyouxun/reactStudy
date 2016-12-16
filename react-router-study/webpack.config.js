@@ -9,7 +9,7 @@ module.exports = {
     filename: 'bundle.js',
     publicPath: '/',
     // chunkFilename: '[name].[chunkhash:5].chunk.js',
-    // chunkFilename: '[name].chunk.js',
+    chunkFilename: '[name].chunk.js',
   },
   resolve:{
     extensions:["",".js",".jsx","css","less","scss","png","jpg"],

@@ -1,7 +1,10 @@
 import React,{Component} from "react";
 import {Link} from "react-router";
 
-class NotFound extends Component{
+export default class NotFound extends Component{
+  componentWillMount(){
+    // console.log('--componentWillMount--');
+  }
   render(){
     return (
       <div>
@@ -13,4 +16,4 @@ class NotFound extends Component{
   }
 }
 
-module.exports = NotFound;
+// module.exports = NotFound;
