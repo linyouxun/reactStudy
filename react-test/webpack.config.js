@@ -1,6 +1,10 @@
 var webpack = require('webpack');
 module.exports = {
-    entry: "./index",
+    entry: [
+      'webpack/hot/dev-server',
+      'webpack-dev-server/client?http://localhost:3000',
+      "./index"
+    ],
     output: {
       path: 'statics/chunkJs',
       filename: 'bundle.js',

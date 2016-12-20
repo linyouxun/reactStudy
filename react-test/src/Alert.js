@@ -3,10 +3,12 @@ export default class Alert extends Component{
   construct(){
     console.log('----- Alert construct ------');
   }
+  componentDidMount(){
+  }
   render(){
     return(
       <div {...this.props}>
-        <div>Alert</div>
+        <div className="div1">Ale3rt</div>
         {this.props.children}
       </div>
     )
