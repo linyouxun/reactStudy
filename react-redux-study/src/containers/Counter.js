@@ -36,4 +36,5 @@ function mapDispatchToProps(dispatch){
   }
 }
 
+export {Counter};
 export default connect(mapStateToProps,mapDispatchToProps)(Counter)

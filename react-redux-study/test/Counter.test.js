@@ -1,6 +1,7 @@
+import React from "react";
 import TestUtils from 'react-addons-test-utils';
-import Counter from "../src/container/Counter";
-console.log('---');
+import Container,{Counter} from "../src/containers/Counter";
+import { expect } from 'chai';
 
 function shallowRender(Component) {
   const renderer = TestUtils.createRenderer();
@@ -11,8 +12,7 @@ function shallowRender(Component) {
 
 describe("Counter server rendering",()=>{
   it("Counter context",()=>{
-    // const Counter = shallowRender(Counter);
-    // console.log(Counter);
-    console.log('---');
+    const app = shallowRender(Counter);
+    console.log(app);
   })
 })
