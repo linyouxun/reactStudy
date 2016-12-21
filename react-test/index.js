@@ -1,9 +1,9 @@
 import React,{Component} from "react";
 import { render } from 'react-dom';
-import Alert from "./src/Alert";
+import Add from "./src/Add";
 
 
 render(
-  <Alert/>,
+  <Add/>,
   document.getElementById('app')
 )
