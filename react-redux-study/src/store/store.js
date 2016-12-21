@@ -6,5 +6,5 @@ import rootReducer from "./reducers";
 
 // export default createStore(counterAdd);
 
-let createStoreWithMiddleware = applyMiddleware(createLogger())(createStore);
+let createStoreWithMiddleware = applyMiddleware(thunkMiddleware,createLogger())(createStore);
 export default createStoreWithMiddleware(rootReducer);
