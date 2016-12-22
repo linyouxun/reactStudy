@@ -30,7 +30,11 @@ export default class SliderImgs extends Component {
 
   _slideStartEvent(target,e){
     e.stopPropagation();
-    target.firstChild.style.transitionDuration = "";
+    target.firstChild.style.webkitTransitionDuration =
+    target.firstChild.style.MozTransitionDuration =
+    target.firstChild.style.msTransitionDuration =
+    target.firstChild.style.OTransitionDuration =
+    target.firstChild.style.transitionDuration = '';
     this.static.touchPos.pageX = e.targetTouches[0].pageX;
     this.static.touchPos.pageY = e.targetTouches[0].pageY;
     this.static.touchPos.moveX = this.getTranslate(target.firstChild);
@@ -40,8 +44,9 @@ export default class SliderImgs extends Component {
     let /*matrix,*/ curTransform, curStyle, transformMatrix;
     curStyle = window.getComputedStyle(el, null);
     if (window.WebKitCSSMatrix) {
+        // transformMatrix = new WebKitCSSMatrix(curStyle.transform || curStyle.OTransform || curStyle.MozTransform || curStyle.msTransform || curStyle.webkitTransform === 'none' ? '' : curStyle.transform || curStyle.OTransform || curStyle.MozTransform || curStyle.msTransform || curStyle.webkitTransform);
         transformMatrix = new WebKitCSSMatrix(curStyle.webkitTransform === 'none' ? '' : curStyle.webkitTransform);
-        curTransform = transformMatrix.m41
+        curTransform = transformMatrix.m41;
     }
     else {
       alert("你的手机暂时不支持滑动查看图片");
@@ -50,25 +55,36 @@ export default class SliderImgs extends Component {
     return curTransform||0;
   }
 
-
   //事件
   _slideMoveEvent(target,e){
     e.stopPropagation();
     const x = e.targetTouches[0].pageX - this.static.touchPos.pageX + this.static.touchPos.moveX;
-    if(target.firstChild.style.WebkitTransform){
-      target.firstChild.style.WebkitTransitionDuration = "0ms";
-      target.firstChild.style.WebkitTransform = "translate3d("+x+"px, 0px, 0px)";
-    }else{
-      target.firstChild.style.WebkitTransitionDuration = "0ms";
-      target.firstChild.style.WebkitTransform = "translate3d(0px, 0px, 0px)";
-      if(target.firstChild.style.transform){
-        target.firstChild.style.transitionDuration = "0ms";
-        target.firstChild.style.transform = "translate3d("+x+"px, 0px, 0px)";
-      }else{
-        target.firstChild.style.transitionDuration = "0ms";
-        target.firstChild.style.transform = "translate3d(0px, 0px, 0px)";
-      }
-    }
+
+    target.firstChild.style.webkitTransitionDuration =
+    target.firstChild.style.MozTransitionDuration =
+    target.firstChild.style.msTransitionDuration =
+    target.firstChild.style.OTransitionDuration =
+    target.firstChild.style.transitionDuration = '0ms';
+
+    target.firstChild.style.webkitTransform =
+    target.firstChild.style.msTransform =
+    target.firstChild.style.MozTransform =
+    target.firstChild.style.OTransform =
+    target.firstChild.style.transform = "translate3d("+x+"px, 0px, 0px)";
+    // if(target.firstChild.style.WebkitTransform){
+    //   target.firstChild.style.WebkitTransitionDuration = "0ms";
+    //   target.firstChild.style.WebkitTransform = "translate3d("+x+"px, 0px, 0px)";
+    // }else{
+    //   target.firstChild.style.WebkitTransitionDuration = "0ms";
+    //   target.firstChild.style.WebkitTransform = "translate3d(0px, 0px, 0px)";
+    //   if(target.firstChild.style.transform){
+    //     target.firstChild.style.transitionDuration = "0ms";
+    //     target.firstChild.style.transform = "translate3d("+x+"px, 0px, 0px)";
+    //   }else{
+    //     target.firstChild.style.transitionDuration = "0ms";
+    //     target.firstChild.style.transform = "translate3d(0px, 0px, 0px)";
+    //   }
+    // }
   }
   //事件
   _slideEndEvent(target,e){
@@ -82,8 +98,20 @@ export default class SliderImgs extends Component {
       curIndex:Math.abs(curCount),
     });
     setTimeout(()=>{
-      target.firstChild.style.WebkitTransitionDuration = "";
-      target.firstChild.style.WebkitTransform = "translate3d("+(curCount*width)+"px, 0px, 0px)";
+      // target.firstChild.style.WebkitTransitionDuration = "";
+      // target.firstChild.style.WebkitTransform = "translate3d("+(curCount*width)+"px, 0px, 0px)";
+
+      target.firstChild.style.webkitTransitionDuration =
+      target.firstChild.style.MozTransitionDuration =
+      target.firstChild.style.msTransitionDuration =
+      target.firstChild.style.OTransitionDuration =
+      target.firstChild.style.transitionDuration = '';
+
+      target.firstChild.style.webkitTransform =
+      target.firstChild.style.msTransform =
+      target.firstChild.style.MozTransform =
+      target.firstChild.style.OTransform =
+      target.firstChild.style.transform = "translate3d("+(curCount*width)+"px, 0px, 0px)";
     },0);
   }
   posLeft(width,left){

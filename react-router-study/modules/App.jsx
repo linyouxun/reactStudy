@@ -33,9 +33,9 @@ import SliderImgs from "./components/SliderImgs";
     ]
     return (
       <div>
-        {/*<SliderImgs imgs={imgs} initClass='sss1'/>
-        <SliderImgs imgs={imgs} initClass='sss2'/>*/}
-        <Link to="/abort2"> Abort2</Link>
+        <SliderImgs imgs={imgs} initClass='sss1'/>
+        {/* <SliderImgs imgs={imgs} initClass='sss2'/> */}
+        {/* <Link to="/abort2"> Abort2</Link>
         <button onClick={this.goAbort}>hello</button>
         <div className="div" data-title="NEW">
           Hello World2
@@ -61,7 +61,7 @@ import SliderImgs from "./components/SliderImgs";
           <li>
             <NavLink to="/abort2" > Abort2</NavLink>
           </li>
-        </ul>
+        </ul> */}
         {/* nihao */}
         {this.props.children}
         {/* nihao */}

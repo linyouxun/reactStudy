@@ -9,9 +9,15 @@
     overflow:hidden;
     background-color: #eee;
     .slider{
+      display: box;
+      display: -o-box;
+      display: -moz-box;
       display: -webkit-box;
-      transition-duration: 300ms;
-      -webkit-transition-duration: 300ms;
+      display: -ms-flexbox;
+      // transition-duration: 300ms;
+      // -o-transition-duration: 300ms;
+      // -moz-transition-duration: 300ms;
+      // -webkit-transition-duration: 300ms;
       div{
         width: 100%;
         img{
