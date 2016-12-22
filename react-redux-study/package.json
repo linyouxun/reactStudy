@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "cross-env NODE_ENV=production && npm run start:prod || npm run start:dev",
-    "start:client": "webpack-dev-server --inline --content-base . --history-api-fallback --host 0.0.0.0 --port 9800",
+    "start:client": "webpack-dev-server --inline --content-base . --history-api-fallback --host 0.0.0.0 --port 9800 --colors --profile --display-modules",
     "start:prod": "npm run build && cross-env NODE_ENV=production node server.bundle.js",
     "start:dev": "npm run build && cross-env NODE_ENV=dev node server.bundle.js",
-    "build:client": "webpack",
+    "build:client": "webpack --colors --profile --display-modules",
     "build:server": "webpack --config webpack.server.config.js",
     "build": "npm run build:client && npm run build:server",
     "test": "mocha --compilers js:babel-core/register --require ./test/setup.js"
