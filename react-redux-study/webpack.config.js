@@ -23,11 +23,11 @@ var pathToRedux = path.resolve(node_modules, 'redux/dist/redux.min.js');
 //基础配置
 var baseConfig = {
   entry: {
-    'app':'./index.jsx',
+    'bundle':'./src/client/index.jsx',
   },
   output: {
     path: 'statics/chunkJs',
-    filename: 'bundle.js',
+    filename: '[name].js',
     publicPath: '/',
   },
   resolve:{
@@ -55,18 +55,15 @@ var baseConfig = {
 // react 额外打包
 var libConfig = {
   entry: {
-    'lib': ["react", "react-dom"],
-    'lib2':['react-redux']
+    'lib': ["react", "react-dom","react-redux"],
   },
   plugins: [
-    // new webpack.optimize.CommonsChunkPlugin({
-    //   name:'lib',
-    //   chunks:['lib'],
-    // }),
-    new webpack.optimize.CommonsChunkPlugin({
-       name:['lib','lib2'],
-       filename:"lib.min.js",//忽略则以name为输出文件的名字，否则以此为输出文件名字
-   })
+  //   new webpack.optimize.CommonsChunkPlugin({
+  //     name:'chunk',
+  //      chunks:['lib','lib2'],
+  //      filename:"lib.min.js",//忽略则以name为输出文件的名字，否则以此为输出文件名字
+  //     //  minChunks: 2,
+  //  })
   ]
 }
 //react从外部引入
