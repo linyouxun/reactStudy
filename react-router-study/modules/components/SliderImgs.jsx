@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from "react";
+import LazyImg from "./LazyImg";
 export default class SliderImgs extends Component {
   constructor(props){
     super(props);
@@ -121,7 +122,8 @@ export default class SliderImgs extends Component {
             imgs.map((item,index)=>{
               return (
                 <div key={index}>
-                  <img src={item}/>
+                  {/* <img src={item}/> */}
+                  <LazyImg defaultClass="" originImg={item}/>
                 </div>
               )
             })
