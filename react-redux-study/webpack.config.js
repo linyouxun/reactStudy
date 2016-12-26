@@ -12,7 +12,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 var node_modules = path.resolve(__dirname, 'node_modules');
 var process_name = process.env.NODE_ENV;
 
-var pathToBuild = path.resolve(__dirname, 'statics/chunkJs');
+var pathToBuild = path.resolve(__dirname, 'statics/js');
 var pathToReact = path.resolve(node_modules, 'react/dist/react.min.js');
 var pathToReactDom = path.resolve(node_modules, 'react-dom/dist/react-dom.min.js');
 var pathToReactRedux = path.resolve(node_modules, 'react-redux/dist/react-redux.min.js');
@@ -20,15 +20,47 @@ var pathToReduxThunk = path.resolve(node_modules, 'redux-thunk/dist/redux-thunk.
 var pathToReduxLogger = path.resolve(node_modules, 'redux-logger/dist/index.min.js');
 var pathToRedux = path.resolve(node_modules, 'redux/dist/redux.min.js');
 
+var baseHotConfig = {
+  entry: {
+    'bundle':['webpack/hot/dev-server','webpack-hot-middleware/client','./src/client/index.jsx',]
+  },
+  output: {
+    path: '/statics/js',
+    filename: '[name].js',
+    publicPath: 'http://localhost:9800/js',
+  },
+  resolve:{
+    extensions:["",".js",".jsx","css","less","scss","png","jpg"],
+  },
+  module: {
+    loaders: [
+      {
+        test: /\.jsx?$/, exclude: /node_modules/,
+        loader: 'babel-loader?presets[]=es2015&presets[]=react'
+      },
+    ]
+  },
+  plugins: [
+    new webpack.NoErrorsPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+    new HtmlWebpackPlugin({
+      title: 'React App',
+      filename: '../index.ejs',
+      template: './indexDev.html',
+      inject: 'body'
+    })
+  ],
+}
+
 //基础配置
 var baseConfig = {
   entry: {
-    'bundle':'./src/client/index.jsx',
+    'bundle':['./src/client/index.jsx',]
   },
   output: {
-    path: 'statics/chunkJs',
+    path: '/statics/js',
     filename: '[name].js',
-    publicPath: '/',
+    publicPath: '/js',
   },
   resolve:{
     extensions:["",".js",".jsx","css","less","scss","png","jpg"],
@@ -45,7 +77,7 @@ var baseConfig = {
     new webpack.NoErrorsPlugin(),
     new HtmlWebpackPlugin({
       title: 'React App',
-      filename: './index.html',
+      filename: '../index.ejs',
       template: './indexDev.html',
       inject: 'body'
     })
@@ -122,7 +154,7 @@ function mergeConfig() {
   let config = baseConfig;
   switch (process_name) {
     case 'dev':{
-      config = merge(baseConfig,libConfig);
+      config = merge(baseHotConfig,libConfig);
       break;
     }
     case 'production':{
