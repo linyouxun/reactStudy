@@ -25,9 +25,9 @@ var baseHotConfig = {
     'bundle':['webpack/hot/dev-server','webpack-hot-middleware/client','./src/client/index.jsx',]
   },
   output: {
-    path: '/statics/js',
+    path: pathToBuild,
     filename: '[name].js',
-    publicPath: 'http://localhost:9800/js',
+    publicPath: '/js',
   },
   resolve:{
     extensions:["",".js",".jsx","css","less","scss","png","jpg"],
@@ -37,7 +37,13 @@ var baseHotConfig = {
       {
         test: /\.jsx?$/, exclude: /node_modules/,
         loader: 'babel-loader?presets[]=es2015&presets[]=react'
-      },
+      },{
+        test: /\.css$/, // Only .css files
+        loader: 'style!css' // Run both loaders
+      },{
+        test: /\.scss$/,
+        loader: 'style!css!sass'
+      }
     ]
   },
   plugins: [
@@ -58,7 +64,7 @@ var baseConfig = {
     'bundle':['./src/client/index.jsx',]
   },
   output: {
-    path: '/statics/js',
+    path: './statics/js',
     filename: '[name].js',
     publicPath: '/js',
   },

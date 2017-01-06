@@ -6,3 +6,6 @@ dist/
 npm-debug.log
 chunkJs/
 server.*.js
+statics
+*.log
+*.txt
