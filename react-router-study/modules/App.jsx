@@ -1,21 +1,29 @@
 import React ,{Component} from 'react';
 import {Link} from "react-router";
+import {Row,Col} from "antd";
 import NavLink from "./NavLink";
 import LazyImg from "./components/LazyImg";
 import SliderImgs from "./components/SliderImgs";
+import InputClear from "./components/InputClear";
 
  export default class App extends Component{
   constructor (props) {
    super(props);
    this.goAbort = this._goAbort.bind(this);
+   this.inputChange = this._inputChange.bind(this);
  }
   componentWillMount(){
     console.log('--componentWillMount--');
   }
   componentDidMount(){
     require('./App.scss');
+    require('antd/dist/antd.css');
   }
 
+  _inputChange(e){
+    console.log(e);
+    console.log(e.target.value);
+  }
 
   _goAbort(){
     this.context.router.push("/abort");
@@ -33,9 +41,27 @@ import SliderImgs from "./components/SliderImgs";
     ]
     return (
       <div>
+        <Row>
+          <Col span={8}>
+            <InputClear
+              placeholder="input search text1"
+              onChange={this.inputChange}
+            />
+          </Col>
+          {/* <Col span={8}>
+            <InputClear
+              placeholder="input search text2"
+            />
+          </Col>
+          <Col span={8}>
+            <InputClear
+              placeholder="input search text3"
+            />
+          </Col> */}
+        </Row>
         {/*<SliderImgs imgs={imgs} initClass='sss1'/>
         <SliderImgs imgs={imgs} initClass='sss2'/>*/}
-        <Link to="/abort2"> Abort2</Link>
+        {/* <Link to="/abort2"> Abort2</Link>
         <button onClick={this.goAbort}>hello</button>
         <div className="div" data-title="NEW">
           Hello World2
@@ -61,9 +87,9 @@ import SliderImgs from "./components/SliderImgs";
           <li>
             <NavLink to="/abort2" > Abort2</NavLink>
           </li>
-        </ul>
+        </ul> */}
         {/* nihao */}
-        {this.props.children}
+        {/* {this.props.children} */}
         {/* nihao */}
         {/* {
           imgs2.map((item,index)=>{

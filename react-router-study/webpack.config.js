@@ -5,6 +5,7 @@ var path = require('path'),
 
 module.exports = {
   entry: './index.jsx',
+  devtool: 'eval-source-map',
   output: {
     path: 'statics/chunkJs',
     filename: 'bundle.js',

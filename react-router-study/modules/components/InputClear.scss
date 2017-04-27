@@ -1,0 +1,28 @@
+span{
+  position: relative;
+}
+.input-clear{
+  position: relative;
+  & + .clear{
+    display: none;
+    pointer-events: none;
+    z-index: 1;
+    position: absolute;
+    right: 7px;
+    background: #FFF;
+    top: 50%;
+    font-size: 12px;
+    color: rgba(0,0,0,.25);
+    width: 14px;
+    height: 14px;
+    margin-top: -7px;
+    line-height: 14px;
+    cursor: pointer;
+    -webkit-transition: color .3s,opacity .3s;
+    transition: color .3s,opacity .3s;
+  }
+  &:valid + .clear{
+    display: inline-block;
+    pointer-events:auto;
+  }
+}

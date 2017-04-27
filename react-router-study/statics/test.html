@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+<style>
+p:after
+{
+content:"- 台词";
+background-color:yellow;
+color:red;
+font-weight:bold;
+}
+.clear { display: none; }
+#clear:valid + a{
+  display: inline;
+}
+</style>
+</head>
+
+<body>
+
+<p>我是唐老鸭。</p>
+<p>我住在 Duckburg。</p>
+<input id="clear" required/><a class="clear">nihao</a>
+<p><b>注释：</b>对于在 IE8 中工作的 :after，必须声明 DOCTYPE。</p>
+
+</body>
+</html>
