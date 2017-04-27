@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from "react";
+import LazyImg from "./LazyImg";
 export default class SliderImgs extends Component {
   constructor(props){
     super(props);
@@ -18,72 +19,76 @@ export default class SliderImgs extends Component {
   componentDidMount(){
     // require('./App.scss');
     const {initClass} = this.props;
-    this.static.count = document.querySelectorAll("."+initClass)[0].firstChild.children.length;
-    this.slideStartEvent = this._slideStartEvent.bind(this,document.querySelectorAll("."+initClass)[0]);
-    this.slideMoveEvent = this._slideMoveEvent.bind(this,document.querySelectorAll("."+initClass)[0]);
-    this.slideEndEvent = this._slideEndEvent.bind(this,document.querySelectorAll("."+initClass)[0]);
-
-    document.querySelectorAll("."+initClass)[0].addEventListener("touchstart",this.slideStartEvent,true);
-    document.querySelectorAll("."+initClass)[0].addEventListener("touchmove",this.slideMoveEvent,true);
-    document.querySelectorAll("."+initClass)[0].addEventListener("touchend",this.slideEndEvent,true);
+    const targetDom = document.querySelectorAll("."+initClass)[0];
+    this.static.count = targetDom.firstChild.children.length;
+    targetDom.firstChild.style.width = this.static.count+"00%";
+    this.slideStartEvent = this._slideStartEvent.bind(this,targetDom);
+    this.slideMoveEvent = this._slideMoveEvent.bind(this,targetDom);
+    this.slideEndEvent = this._slideEndEvent.bind(this,targetDom);
+    targetDom.addEventListener("touchstart",this.slideStartEvent,true);
+    targetDom.addEventListener("touchmove",this.slideMoveEvent,true);
+    targetDom.addEventListener("touchend",this.slideEndEvent,true);
   }
 
   _slideStartEvent(target,e){
     e.stopPropagation();
-    target.firstChild.style.transitionDuration = "";
-    this.static.touchPos.pageX = e.targetTouches[0].pageX;
-    this.static.touchPos.pageY = e.targetTouches[0].pageY;
-    this.static.touchPos.moveX = this.getTranslate(target.firstChild);
+    target.firstChild.style.webkitTransitionDuration =
+    target.firstChild.style.MozTransitionDuration =
+    target.firstChild.style.msTransitionDuration =
+    target.firstChild.style.OTransitionDuration =
+    target.firstChild.style.transitionDuration = '';
+    this.static.touchPos.pageX = e.touches[0].pageX;
+    this.static.touchPos.pageY = e.touches[0].pageY;
   }
 
-  getTranslate(el){
-    let /*matrix,*/ curTransform, curStyle, transformMatrix;
-    curStyle = window.getComputedStyle(el, null);
-    if (window.WebKitCSSMatrix) {
-        transformMatrix = new WebKitCSSMatrix(curStyle.webkitTransform === 'none' ? '' : curStyle.webkitTransform);
-        curTransform = transformMatrix.m41
-    }
-    else {
-      alert("你的手机暂时不支持滑动查看图片");
-      this.removeEvent();
-    }
-    return curTransform||0;
-  }
+  getTranslate(){
 
+  }
 
   //事件
   _slideMoveEvent(target,e){
     e.stopPropagation();
-    const x = e.targetTouches[0].pageX - this.static.touchPos.pageX + this.static.touchPos.moveX;
-    if(target.firstChild.style.WebkitTransform){
-      target.firstChild.style.WebkitTransitionDuration = "0ms";
-      target.firstChild.style.WebkitTransform = "translate3d("+x+"px, 0px, 0px)";
-    }else{
-      target.firstChild.style.WebkitTransitionDuration = "0ms";
-      target.firstChild.style.WebkitTransform = "translate3d(0px, 0px, 0px)";
-      if(target.firstChild.style.transform){
-        target.firstChild.style.transitionDuration = "0ms";
-        target.firstChild.style.transform = "translate3d("+x+"px, 0px, 0px)";
-      }else{
-        target.firstChild.style.transitionDuration = "0ms";
-        target.firstChild.style.transform = "translate3d(0px, 0px, 0px)";
-      }
-    }
+    const width = target.offsetWidth;
+    const x = e.touches[0].pageX - this.static.touchPos.pageX + this.state.curIndex * width * -1;
+    this.static.touchPos.moveX = x;
+    target.firstChild.style.webkitTransitionDuration =
+    target.firstChild.style.MozTransitionDuration =
+    target.firstChild.style.msTransitionDuration =
+    target.firstChild.style.OTransitionDuration =
+    target.firstChild.style.transitionDuration = '0ms';
+
+    target.firstChild.style.width = this.static.count+"00%";
+    target.firstChild.style.webkitTransform =
+    target.firstChild.style.msTransform =
+    target.firstChild.style.MozTransform =
+    target.firstChild.style.OTransform =
+    target.firstChild.style.transform = "translate3d("+x+"px, 0px, 0px)";
   }
   //事件
   _slideEndEvent(target,e){
     e.stopPropagation();
-    target.scrollLeft = 0;
-    this.static.touchPos={pageX:0,pageY:0,};
     const width = target.offsetWidth;
-    const moveEndY = this.getTranslate(target.firstChild);
+    const moveEndY = this.static.touchPos.moveX;
     const curCount = this.posLeft(width,moveEndY);
+    target.scrollLeft = 0;
+    this.static.touchPos.pageX=0;
+    this.static.touchPos.pageY=0;
     this.setState({
       curIndex:Math.abs(curCount),
     });
     setTimeout(()=>{
-      target.firstChild.style.WebkitTransitionDuration = "";
-      target.firstChild.style.WebkitTransform = "translate3d("+(curCount*width)+"px, 0px, 0px)";
+      target.firstChild.style.webkitTransitionDuration =
+      target.firstChild.style.MozTransitionDuration =
+      target.firstChild.style.msTransitionDuration =
+      target.firstChild.style.OTransitionDuration =
+      target.firstChild.style.transitionDuration = '300ms';
+
+      target.firstChild.style.width = this.static.count+"00%";
+      target.firstChild.style.webkitTransform =
+      target.firstChild.style.msTransform =
+      target.firstChild.style.MozTransform =
+      target.firstChild.style.OTransform =
+      target.firstChild.style.transform = "translate3d("+(curCount*width)+"px, 0px, 0px)";
     },0);
   }
   posLeft(width,left){
@@ -117,7 +122,8 @@ export default class SliderImgs extends Component {
             imgs.map((item,index)=>{
               return (
                 <div key={index}>
-                  <img src={item}/>
+                  {/* <img src={item}/> */}
+                  <LazyImg defaultClass="" originImg={item}/>
                 </div>
               )
             })

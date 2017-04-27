@@ -11,46 +11,43 @@ import App from './App';
 const routes = [
   {
     path:"/",
-    component:App
+    getComponents(location, callback) {
+      require.ensure([], function (require) {
+        callback(null, require('./App').default)
+      })
+    },
+  indexRoute:{
+    getComponents(location, callback) {
+      require.ensure([], function (require) {
+        callback(null, require('./Abort').default)
+      })
+    },
+  },
+  childRoutes:[
+    {
+      path:"abort",
+      getComponents(location, callback) {
+        require.ensure([], function (require) {
+          callback(null, require('./Abort').default)
+        })
+      },
+    },{
+      path:"repo/:id",
+      getComponents(location, callback) {
+        require.ensure([], function (require) {
+          callback(null, require('./Repo').default)
+        })
+      }
+    }]
+  },
+  {
+    path:"*",
+    getComponents(location, callback) {
+      require.ensure([], function (require) {
+        callback(null, require('./NotFound').default)
+      })
+    }
   }
-    // getComponents(location, callback) {
-    //   require.ensure([], function (require) {
-    //     callback(null, require('./App').default)
-    //   })
-    // },
-  //   indexRoute:{
-  //     getComponents(location, callback) {
-  //       require.ensure([], function (require) {
-  //         callback(null, require('./Abort').default)
-  //       })
-  //     },
-  //   },
-  //   childRoutes:[
-  //     {
-  //       path:"abort",
-  //       getComponents(location, callback) {
-  //         require.ensure([], function (require) {
-  //           callback(null, require('./Abort').default)
-  //         })
-  //       },
-  //     },{
-  //       path:"repo/:id",
-  //       getComponents(location, callback) {
-  //         require.ensure([], function (require) {
-  //           callback(null, require('./Repo').default)
-  //         })
-  //       }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path:"*",
-  //   getComponents(location, callback) {
-  //     require.ensure([], function (require) {
-  //       callback(null, require('./NotFound').default)
-  //     })
-  //   }
-  // }
 ]
 
 module.exports = routes;

@@ -9,11 +9,20 @@
     overflow:hidden;
     background-color: #eee;
     .slider{
+      display: flex;
+      display: -o-box;
+      display: -moz-box;
       display: -webkit-box;
-      transition-duration: 300ms;
-      -webkit-transition-duration: 300ms;
+      display: -ms-flexbox;
+      touch-action: none;
       div{
         width: 100%;
+        touch-action: none;
+        -webkit-box-flex: 1;
+        -moz-box-flex: 1;
+        -ms-flex: 1;
+        -o-box-flex: 1;
+        flex: 1;
         img{
           width: 100%;
         }
