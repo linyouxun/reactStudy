@@ -94,7 +94,7 @@ import InputClear from "./components/InputClear";
           <li>
             <NavLink to="/abort2" > Abort2</NavLink>
           </li>
-        </ul>
+        </ul> */}
         {/* nihao */}
         {/* {this.props.children} */}
         {/* nihao */}
